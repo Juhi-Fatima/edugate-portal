@@ -9,11 +9,13 @@ function App() {
   const handleVerify = async () => {
     setIsProcessing(true);
     try {
-      const response = await fetch('[https://edugate-api-juhi.azurewebsites.net/api/data](https://edugate-api-juhi.azurewebsites.net/api/data)', {
+      // FIX: Clean link with no brackets and correct /verify path
+      const response = await fetch('https://edugate-api-juhi.azurewebsites.net/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ enteredPin: pin })
       });
+      
       const data = await response.json();
 
       if (data.status === "APPROVED") {
@@ -31,6 +33,7 @@ function App() {
         }, 2000);
       }
     } catch (error) {
+      console.error("Connection Error:", error);
       setMessage("ERROR: Brain (Backend) Offline");
     }
     setIsProcessing(false);
